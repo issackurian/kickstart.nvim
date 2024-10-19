@@ -4,4 +4,6 @@ test.sh
 nvim
 
 spell/
-lazy-lock.json
+# Un-ignore the lazy-lock.json - See:
+# https://github.com/nvim-lua/kickstart.nvim?tab=readme-ov-file#recommended-step
+# lazy-lock.json
