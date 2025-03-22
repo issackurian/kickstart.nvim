@@ -208,13 +208,11 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- set commentstring for terraform files, will be used by commentary.vim
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'terraform', 'tf' },
-  callback = function()
-    vim.bo['commentstring'] = '# %s'
-  end,
-})
+-- BEGIN: Custom keymaps, options, autocommands, etc.
+require 'custom.options'
+require 'custom.keymaps'
+require 'custom.autocommands'
+-- END: Custom keymaps, options, autocommands, etc.
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
