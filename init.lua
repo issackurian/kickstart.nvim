@@ -1038,7 +1038,64 @@ require('lazy').setup({
     --    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
   },
 
-  -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
+  { -- nvim-metals (Scala LSP)
+    'scalameta/nvim-metals',
+    ft = { 'scala', 'sbt' },
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      -- 'nvim-lua/popup.nvim',
+    },
+
+    -- sytlua: ignore
+    keys = {
+      {
+        '<leader>cW',
+        function()
+          require('metals').hover_worksheet()
+        end,
+        desc = 'Metals Worksheet',
+      },
+      {
+        '<leader>cM',
+        function()
+          require('telescope').extensions.metals.commands()
+        end,
+        desc = 'Telescope Metals Commands',
+      },
+      -- { '<leader>mm', function() require('metals').toggle_breakpoint() end, mode = 'n', desc = '[M]etals [M]ark breakpoint', },
+      -- { '<leader>mr', function() require('metals').run_last_metals_command() end, mode = 'n', desc = '[M]etals [R]un last command', },
+    },
+    init = function()
+      local metals_config = require('metals').bare_config()
+
+      metals_config.settings = {
+        showImplicitArguments = true,
+        showImplicitConversionsAndClasses = true,
+        showInferredType = true,
+        superMethodLensesEnabled = true,
+      }
+      metals_config.init_options = {
+        statusBarProvider = 'on',
+        capabilities = require('cmp_nvim_lsp').default_capabilities(),
+        -- decorationProvider = 'on',
+        -- didFocusProvider = 'on',
+        -- didChange = {
+        --   didFocusProvider = 'on',
+        -- },
+      }
+
+      local nvim_metals_group = vim.api.nvim_create_augroup('nvim-metals', { clear = true })
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = { 'scala', 'sbt' },
+        callback = function()
+          require('metals').initialize_or_attach(metals_config)
+        end,
+        group = nvim_metals_group,
+      })
+    end,
+  },
+
+  -- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
 
