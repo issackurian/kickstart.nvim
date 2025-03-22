@@ -367,6 +367,7 @@ require('lazy').setup({
           return vim.fn.executable 'make' == 1
         end,
       },
+      { 'nvim-telescope/telescope-file-browser.nvim' },
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
@@ -398,20 +399,31 @@ require('lazy').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
-        -- pickers = {}
+        defaults = {
+          layout_strategy = 'center',
+          -- mappings = {
+          --   i = { ['<c-enter>'] = 'to_fuzzy_refine' },
+          -- },
+        },
+        pickers = {
+          buffers = {
+            mappings = {
+              i = {
+                ['<c-d>'] = 'delete_buffer',
+              },
+            },
+          },
+        },
         extensions = {
           ['ui-select'] = {
             require('telescope.themes').get_dropdown(),
           },
+          ['file_browser'] = {},
         },
       }
 
       -- Enable Telescope extensions if they are installed
+      pcall(require('telescope').load_extension, 'file_browser')
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
 
@@ -450,6 +462,10 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sn', function()
         builtin.find_files { cwd = vim.fn.stdpath 'config' }
       end, { desc = '[S]earch [N]eovim files' })
+
+      vim.keymap.set('n', '<leader>fb', function()
+        require('telescope').extensions.file_browser.file_browser()
+      end, { desc = '[F]ile [B]rowser' })
     end,
   },
 
