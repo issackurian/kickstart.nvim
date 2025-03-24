@@ -211,7 +211,7 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- BEGIN: Custom keymaps, options, autocommands, etc.
 require 'custom.options'
 require 'custom.keymaps'
-require 'custom.autocommands'
+require 'custom.autocmds'
 -- END: Custom keymaps, options, autocommands, etc.
 
 -- [[ Install `lazy.nvim` plugin manager ]]
